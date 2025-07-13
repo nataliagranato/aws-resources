@@ -1,12 +1,8 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -102,11 +98,9 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
-.env
-.venv
-env/
+# Virtual environments
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
@@ -135,7 +129,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# IDEs
+# IDE
 .vscode/
 .idea/
 *.swp
@@ -145,3 +139,7 @@ cython_debug/
 # OS
 .DS_Store
 Thumbs.db
+
+# AWS
+.aws/
+credentials

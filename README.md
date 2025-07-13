@@ -1,14 +1,24 @@
-# AWS Resources CLI
+# AWS Resources CLI Tool
 
-A command-line tool for managing AWS resources using boto3. This CLI provides an easy-to-use interface for creating and managing various AWS services.
+A comprehensive command-line interface for creating various AWS resources including S3 buckets, EC2 instances, DynamoDB tables, RDS instances, Lambda functions, and SNS topics.
 
 ## Features
 
+Currently implemented:
 - **S3 Bucket Management**: Create S3 buckets with region specification
 - **EC2 Instance Management**: Launch EC2 instances with customizable configuration
-- **Extensible Architecture**: Designed to support future services (DynamoDB, RDS, Lambda, SNS)
-- **Comprehensive Error Handling**: Clear error messages and validation
-- **Verbose Output**: Optional detailed information about operations
+
+Planned features:
+- **DynamoDB Tables**: Create DynamoDB tables with partition keys and optional sort keys
+- **RDS Instances**: Create RDS database instances with various engines  
+- **Lambda Functions**: Create Lambda functions with different runtimes
+- **SNS Topics**: Create SNS topics for messaging
+
+## Prerequisites
+
+- Python 3.8 or higher
+- AWS credentials configured (via AWS CLI, environment variables, or IAM roles)
+- Required Python packages (see requirements.txt)
 
 ## Installation
 
@@ -28,14 +38,10 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## AWS Configuration
-
-Before using this tool, ensure your AWS credentials are configured. You can use any of these methods:
-
-- AWS CLI: `aws configure`
-- Environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-- IAM roles (for EC2 instances)
-- AWS credentials file
+4. Configure AWS credentials (choose one method):
+   - Using AWS CLI: `aws configure`
+   - Using environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+   - Using IAM roles (if running on EC2)
 
 ## Usage
 

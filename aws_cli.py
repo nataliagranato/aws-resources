@@ -19,14 +19,25 @@ Usage:
     python aws_cli.py sns create-topic --name my-topic --region us-east-1
 
 Requirements:
+    - Python 3.6+
     - boto3
     - AWS credentials configured (via AWS CLI, environment variables, or IAM roles)
 """
 
 import argparse
-import boto3
 import sys
-from botocore.exceptions import ClientError, NoCredentialsError
+
+# Check Python version
+if sys.version_info < (3, 6):
+    print("Error: This script requires Python 3.6 or higher")
+    sys.exit(1)
+
+try:
+    import boto3
+    from botocore.exceptions import ClientError, NoCredentialsError
+except ImportError:
+    print("Error: boto3 is required. Install it with: pip install boto3")
+    sys.exit(1)
 
 
 def create_s3_bucket(args):

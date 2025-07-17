@@ -9,12 +9,16 @@ from .services.s3 import S3Service
 from .services.ec2 import EC2Service
 
 
+from rich.console import Console
+from rich.panel import Panel
+
 def create_s3_bucket(args) -> None:
     """Create an S3 bucket.
     
     Args:
         args: Parsed command line arguments
     """
+    console = Console()
     try:
         s3_service = S3Service(args.region)
         result = s3_service.create_resource(
@@ -23,22 +27,22 @@ def create_s3_bucket(args) -> None:
         )
         
         if result['success']:
-            print(f"✅ {result['message']}")
-            if args.verbose:
-                print(f"   Bucket: {result['bucket_name']}")
-                print(f"   Region: {result['region']}")
-                if result.get('location'):
-                    print(f"   Location: {result['location']}")
+            content = f"Bucket: {result['bucket_name']}\nRegion: {result['region']}"
+            if result.get('location'):
+                content += f"\nLocation: {result['location']}"
+            panel = Panel(content, title="[bold green]S3 Bucket Created Successfully[/bold green]", expand=False)
+            console.print(panel)
         else:
-            print(f"❌ {result['message']}")
-            if args.verbose:
-                print(f"   Error: {result.get('error', 'Unknown')}")
+            panel = Panel(f"Error: {result.get('error', 'Unknown')}", title="[bold red]Failed to Create S3 Bucket[/bold red]", subtitle=f"[red]{result['message']}[/red]", expand=False)
+            console.print(panel)
             sys.exit(1)
             
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        console.print(Panel(str(e), title="[bold red]An unexpected error occurred[/bold red]", expand=False))
         sys.exit(1)
 
+
+from rich.table import Table
 
 def create_ec2_instances(args) -> None:
     """Create EC2 instances.
@@ -46,6 +50,7 @@ def create_ec2_instances(args) -> None:
     Args:
         args: Parsed command line arguments
     """
+    console = Console()
     try:
         ec2_service = EC2Service(args.region)
         result = ec2_service.create_resource(
@@ -57,22 +62,29 @@ def create_ec2_instances(args) -> None:
         )
         
         if result['success']:
-            print(f"✅ {result['message']}")
-            if args.verbose:
-                print(f"   Instance IDs: {', '.join(result['instance_ids'])}")
-                print(f"   Count: {result['count']}")
-                print(f"   AMI: {result['image_id']}")
-                print(f"   Instance Type: {result['instance_type']}")
-                print(f"   Key Pair: {result['key_name']}")
-                print(f"   Region: {result['region']}")
+            table = Table(title="[bold green]EC2 Instances Created Successfully[/bold green]")
+            table.add_column("Instance ID", style="cyan", no_wrap=True)
+            table.add_column("Image ID", style="magenta")
+            table.add_column("Instance Type", style="yellow")
+            table.add_column("Key Pair", style="green")
+            table.add_column("Region", style="blue")
+
+            for instance_id in result['instance_ids']:
+                table.add_row(
+                    instance_id,
+                    result['image_id'],
+                    result['instance_type'],
+                    result['key_name'],
+                    result['region']
+                )
+            console.print(table)
         else:
-            print(f"❌ {result['message']}")
-            if args.verbose:
-                print(f"   Error: {result.get('error', 'Unknown')}")
+            panel = Panel(f"Error: {result.get('error', 'Unknown')}", title="[bold red]Failed to Create EC2 Instances[/bold red]", subtitle=f"[red]{result['message']}[/red]", expand=False)
+            console.print(panel)
             sys.exit(1)
             
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        console.print(Panel(str(e), title="[bold red]An unexpected error occurred[/bold red]", expand=False))
         sys.exit(1)
 
 

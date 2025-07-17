@@ -29,7 +29,7 @@ setup(
         "Programming Language :: Python :: 3.11",
     ],
     python_requires=">=3.8",
-    install_requires=requirements + ['Flask>=2.0'],
+    install_requires=requirements + ['Flask>=2.0', 'rich>=10.0.0'],
     entry_points={
         "console_scripts": [
             "aws-resources=aws_cli.main:main",

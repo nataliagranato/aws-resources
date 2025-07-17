@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Resource Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>AWS Resource Creator</h1>
+
+        <div id="s3-section">
+            <h2>Create S3 Bucket</h2>
+            <form id="s3-form">
+                <label for="s3-bucket-name">Bucket Name:</label>
+                <input type="text" id="s3-bucket-name" name="bucket_name" required>
+
+                <label for="s3-region">Region:</label>
+                <input type="text" id="s3-region" name="region" required>
+
+                <button type="submit">Create Bucket</button>
+            </form>
+            <div id="s3-result" class="result"></div>
+        </div>
+
+        <div id="ec2-section">
+            <h2>Create EC2 Instance</h2>
+            <form id="ec2-form">
+                <label for="ec2-image-id">Image ID (AMI):</label>
+                <input type="text" id="ec2-image-id" name="image_id" required>
+
+                <label for="ec2-instance-type">Instance Type:</label>
+                <input type="text" id="ec2-instance-type" name="instance_type" required>
+
+                <label for="ec2-key-name">Key Name:</label>
+                <input type="text" id="ec2-key-name" name="key_name" required>
+
+                <label for="ec2-count">Count:</label>
+                <input type="number" id="ec2-count" name="count" value="1" min="1" required>
+
+                <label for="ec2-region">Region:</label>
+                <input type="text" id="ec2-region" name="region" required>
+
+                <button type="submit">Create Instances</button>
+            </form>
+            <div id="ec2-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('s3-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const resultDiv = document.getElementById('s3-result');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            resultDiv.textContent = 'Creating...';
+            resultDiv.className = 'result pending';
+
+            const response = await fetch('/api/s3', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            resultDiv.textContent = result.message;
+            if (result.success) {
+                resultDiv.className = 'result success';
+            } else {
+                resultDiv.className = 'result error';
+            }
+        });
+
+        document.getElementById('ec2-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const resultDiv = document.getElementById('ec2-result');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            resultDiv.textContent = 'Creating...';
+            resultDiv.className = 'result pending';
+
+            const response = await fetch('/api/ec2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            resultDiv.textContent = result.message;
+            if (result.success) {
+                resultDiv.className = 'result success';
+            } else {
+                resultDiv.className = 'result error';
+            }
+        });
+    </script>
+</body>
+</html>

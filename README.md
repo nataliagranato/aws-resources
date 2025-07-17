@@ -278,4 +278,33 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) 
 
 ---
 
+## Web Interface (New)
+
+This project now includes a user-friendly web interface for creating AWS resources.
+
+### Running the Web App
+
+1.  **Install Flask**:
+    ```bash
+    pip install Flask
+    ```
+
+2.  **Run the application**:
+    ```bash
+    python -m aws_ui.app
+    ```
+    Or, if installed via `pip install -e .`:
+    ```bash
+    aws-resources-web
+    ```
+
+3.  Open your browser and navigate to `http://127.0.0.1:5000`.
+
+### Web App Features
+- Create S3 buckets
+- Launch EC2 instances
+- Real-time feedback on resource creation status
+
+---
+
 Feito com ❤️ por [Natália Granato](https://github.com/nataliagranato).

@@ -8,14 +8,15 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="aws-resources-cli",
-    version="0.1.0",
+    version="0.2.0",
     author="Natália Granato",
     author_email="",
-    description="A command-line tool for managing AWS resources",
+    description="A command-line tool and web UI for managing AWS resources",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/nataliagranato/aws-resources",
     packages=find_packages(),
+    include_package_data=True,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
@@ -28,10 +29,11 @@ setup(
         "Programming Language :: Python :: 3.11",
     ],
     python_requires=">=3.8",
-    install_requires=requirements,
+    install_requires=requirements + ['Flask>=2.0'],
     entry_points={
         "console_scripts": [
             "aws-resources=aws_cli.main:main",
+            "aws-resources-web=aws_ui.app:main",
         ],
     },
 )
